@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Layout from '../components/Layout';
@@ -14,7 +15,9 @@ const App = () => {
     <div className="App">
       <QueryClientProvider client={queryClient}>
         <Layout>
-          <RouterProvider router={router} />
+          <Suspense fallback={<>Loading...</>}>
+            <RouterProvider router={router} />
+          </Suspense>
         </Layout>
       </QueryClientProvider>
     </div>

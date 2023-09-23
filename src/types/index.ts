@@ -18,3 +18,10 @@ export interface IPlanet {
   residents: string[];
   films: string[];
 }
+
+export interface IApiPlanetsResponse {
+  count: number;
+  next: string;
+  previous: string;
+  results: IPlanet[];
+}

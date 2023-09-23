@@ -10,17 +10,19 @@ interface IApiResults {
   refetch: (options: { throwOnError: boolean, cancelRefetch: boolean }) => Promise<UseQueryResult>;
 }
 
-export const useGetPlanet = (url: string): IApiResults => {
+const endpoint = 'https://swapi.dev/api/planets';
+
+export const useGetPlanet = (id: string): IApiResults => {
   /**
    * getPlanet
    */
   const getPlanet = async () => {
-		const res = await fetch(new URL(url));
+		const res = await fetch(`${endpoint}/${id}`);
 		return res.json();
 	};
 
   const { data, isLoading, refetch }  = useQuery(
-    ['getPlanet', { url }],
+    ['getPlanet', { id }],
     getPlanet,
     {
       onError: () => {},
@@ -29,7 +31,7 @@ export const useGetPlanet = (url: string): IApiResults => {
   );
 
   return {
-    planet: data?.results || null,
+    planet: data,
     isLoading,
     refetch
   }

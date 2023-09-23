@@ -1,18 +1,20 @@
 /**
  * Hook for get planets
  */
-import { useInfiniteQuery, UseQueryResult } from 'react-query';
-import { IPlanet } from '../types';
+import { useInfiniteQuery, FetchNextPageOptions, UseInfiniteQueryResult, InfiniteData } from 'react-query';
+import { IApiPlanetsResponse } from '../types';
 
 interface IApiProps {
   page: number;
   size: number;
 }
 
-interface IApiResults {
-  planets: IPlanet[];
+interface IResults {
+  planets: IApiPlanetsResponse[];
   isLoading: boolean;
-  refetch: (options: { throwOnError: boolean, cancelRefetch: boolean }) => Promise<UseQueryResult>;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean | undefined;
+  fetchNextPage: (options?: FetchNextPageOptions) => Promise<UseInfiniteQueryResult>;
 }
 
 const defaultProps = {
@@ -22,24 +24,21 @@ const defaultProps = {
 
 const endpoint = 'https://swapi.dev/api/planets';
 
-export const useGetPlanets = (config: IApiProps = defaultProps): IApiResults => {
-  const { data, isLoading, refetch }  = useInfiniteQuery(
+export const useGetPlanets = (config: IApiProps = defaultProps): IResults => {
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage }  = useInfiniteQuery(
     ['getPlanets', { ...config }],
-    async ({ pageParam = 1 }) => {
-      if (pageParam && pageParam !== 0) {
-        const res = await fetch(`${endpoint}?page=${pageParam}`);
-        return res.json();
-      }
-      return null;
+    async ({ pageParam = 1 }): Promise<IApiPlanetsResponse> => {
+      const res = await fetch(`${endpoint}?page=${pageParam}`);
+      return res.json();
     },
     {
       getNextPageParam: (lastPage) => {
         if (lastPage?.next) {
           const nextUrl = new URL(lastPage.next);
-          const nextPage = nextUrl.searchParams.get("page") || 0;
+          const nextPage = nextUrl.searchParams.get("page") || null;
           return nextPage;
         }
-        return 0;
+        return null;
       },
       onError: () => {},
       retry: 1,
@@ -49,6 +48,8 @@ export const useGetPlanets = (config: IApiProps = defaultProps): IApiResults => 
   return {
     planets: data?.pages || [],
     isLoading,
-    refetch
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
   }
 }
