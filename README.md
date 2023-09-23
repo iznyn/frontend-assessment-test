@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Frontend Assessment Test by M Arif Mahthunis Naini
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
