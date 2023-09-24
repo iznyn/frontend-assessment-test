@@ -1,15 +1,11 @@
 /**
  * General Layout
  */
-import { FC, ReactElement } from "react";
 import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
 
 import { Header } from './Header';
 import { Footer } from './Footer';
-
-interface ILayout {
-  children: ReactElement;
-}
 
 const Wrapper = styled.div`
   max-width: 520px;
@@ -28,13 +24,13 @@ const Inner = styled.div`
   flex-direction: column;
 `;
 
-const Layout: FC<ILayout> = ({ children }) => {
+const Layout = () => {
   return (
     <Wrapper>
       <Inner>
         <Header />
         <Main>
-          {children}
+          <Outlet />
         </Main>
         <Footer />
       </Inner>

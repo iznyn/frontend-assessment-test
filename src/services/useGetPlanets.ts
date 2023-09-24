@@ -1,7 +1,7 @@
 /**
  * Hook for get planets
  */
-import { useInfiniteQuery, FetchNextPageOptions, UseInfiniteQueryResult, InfiniteData } from 'react-query';
+import { useInfiniteQuery, FetchNextPageOptions, UseInfiniteQueryResult } from 'react-query';
 import { IApiPlanetsResponse } from '../types';
 
 interface IApiProps {

@@ -1,12 +1,12 @@
 /**
  * Homepage views
  */
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
 import { useGetPlanets } from '../services/useGetPlanets';
-import { SearchInput, Planets } from '../components/Home';
+import { Planets } from '../components/Home';
 
 const Heading = styled.h2`
   font-size: 24px;
@@ -35,7 +35,6 @@ const Loader = styled.div`
 `;
 
 const HomePage = () => {
-  const [keyword, setKeyword] = useState('');
   const { ref: scrollRef, inView } = useInView();
 
   const { planets, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useGetPlanets();
@@ -46,23 +45,13 @@ const HomePage = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  /**
-   * onSearch
-   */
-  const onSearch = (value: string) => {
-    if (value?.length > 4) {
-      setKeyword(value);
-    }
-  }
-
   return (
     <>
       <Heading>Welcome Human!</Heading>
       <Info>Explore our planets and you can find incredible things. Enjoy!</Info>
-      <SearchInput onChange={onSearch} />
       <Main>
         {(planets?.length === 0 && isLoading) && (
-          <>Loading...</>
+          <Loader>Loading...</Loader>
         )}
         {planets?.length > 0 && (
           <Planets 

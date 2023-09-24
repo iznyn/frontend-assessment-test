@@ -19,6 +19,15 @@ export interface IPlanet {
   films: string[];
 }
 
+export interface IFavorite {
+  id: number;
+  name: string;
+  diameter: string;
+  climate: string;
+  population: string;
+  created: string;
+}
+
 export interface IApiPlanetsResponse {
   count: number;
   next: string;
