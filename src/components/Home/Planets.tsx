@@ -4,7 +4,7 @@
 import { FC, Fragment } from 'react';
 import styled from 'styled-components';
 import {IPlanet, IApiPlanetsResponse } from '../../types';
-import { PlanetCard } from './PlanetCard';
+import { PlanetCard } from '../PlanetCard';
 
 const Wrapper = styled.div`
   margin: 20px 0;
@@ -34,12 +34,20 @@ export const Planets: FC<IPlanetsProps> = ({ planets }) => {
         <>
           {planets.map((pages, index) => (
             <Fragment key={`product-page-${index}`}>
-              {pages.results.map((item: IPlanet, subindex) => (
-                <PlanetCard 
-                  key={`product-${index}-${subindex}`} 
-                  planet={item}
-                />
-              ))}
+              {pages.results.map((item: IPlanet, subindex) => {
+                const planetId = parseInt(item.url.replace('https://swapi.dev/api/planets/', ''));
+
+                return (
+                  <PlanetCard 
+                    key={`product-${index}-${subindex}`} 
+                    id={planetId}
+                    name={item.name}
+                    diameter={item.diameter}
+                    population={item.population}
+                    climate={item.climate}
+                  />
+                );
+              })}
             </Fragment>
           ))}
         </>

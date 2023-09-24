@@ -5,13 +5,12 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { IPlanet } from '../../types';
-import { getNumberAbbr, getNumberFormat } from '../../utils/number';
-import IconA from './icons/circleci.svg';
-import IconUser from './icons/user.svg';
-import IconContrast from './icons/edit-contrast.svg';
-import IconRedo from './icons/redo.svg';
-import IconArrow from './icons/chevron-right.svg';
+import { getNumberAbbr, getNumberFormat } from '../utils/number';
+import IconA from './Home/icons/circleci.svg';
+import IconUser from './Home/icons/user.svg';
+import IconContrast from './Home/icons/edit-contrast.svg';
+import IconRedo from './Home/icons/redo.svg';
+import IconArrow from './Home/icons/chevron-right.svg';
 
 const Wrapper = styled(Link)`
   display: flex;
@@ -62,29 +61,33 @@ const Arrow = styled.img`
 `;
 
 interface IPlanetProps {
-  planet: IPlanet;
+  id: number;
+  name: string;
+  climate: string;
+  population: string;
+  diameter: string;
 }
 
-export const PlanetCard: FC<IPlanetProps> = ({ planet }) => {
-  const planetId = parseInt(planet.url.replace('https://swapi.dev/api/planets/', ''));
+export const PlanetCard: FC<IPlanetProps> = (props) => {
+  const { id, name, climate, population, diameter } = props;
 
   return (
-    <Wrapper to={`/planet/${planetId}`}>
+    <Wrapper to={`/planet/${id}`}>
       <Icon src={IconA} alt="" />
       <Content>
-        <Title>{planet.name}</Title>
+        <Title>{name}</Title>
         <MetaData>
           <MetaItem>
             <MetaItemIcon src={IconUser} alt="" />
-            {planet.population !== 'unknown' ? getNumberAbbr(parseInt(planet.population)) : 'Unknown'}
+            {population !== 'unknown' ? getNumberAbbr(parseInt(population)) : 'Unknown'}
           </MetaItem>
           <MetaItem>
             <MetaItemIcon src={IconContrast} alt="" />
-            {planet.climate}
+            {climate}
           </MetaItem>
           <MetaItem>
             <MetaItemIcon src={IconRedo} alt="" />
-            {getNumberFormat(parseInt(planet.diameter))} KM
+            {getNumberFormat(parseInt(diameter))} KM
           </MetaItem>
         </MetaData>
       </Content>
